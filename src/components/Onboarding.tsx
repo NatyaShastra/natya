@@ -1,5 +1,6 @@
 import React from "react";
 
+import "../styles/Navbar.css";
 export const Onboarding: React.FC = () => {
   return (
     <div className="page-container">

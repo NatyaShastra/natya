@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/Services.css";
 
 export const Services: React.FC = () => {
   return (

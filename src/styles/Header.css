@@ -1,0 +1,72 @@
+/* Header Container */
+.header {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 0; /* Adjust spacing */
+  margin-bottom: 10px; /* Creates space between header and navbar */
+}
+
+/* Header Top - Title & Logo */
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; /* Space between title and logo */
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Title Styling */
+.header-title {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Logo Styling */
+.header-logo {
+  height: 50px;
+  width: auto;
+}
+
+.header-tagline {
+  font-size: 20px;  /* Increased font size */
+  font-weight: 400; /* Make it slightly bolder */
+  /* margin-top: 8px; */
+  color: #ddd;
+  max-width: 80%;
+  text-align: center;
+}
+
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .header {
+    padding: 10px 0;
+  }
+
+  .header-top {
+    flex-direction: row; /* Keeps logo and title in one line */
+    justify-content: center;
+  }
+
+  .header-title {
+    font-size: 28px;
+  }
+
+  .header-logo {
+    height: 40px; /* Adjust size for mobile */
+  }
+
+  .header-tagline {
+    font-size: 18px; /* Slightly smaller for mobile */
+    max-width: 90%;
+    font-style: italic;
+  }
+}

@@ -1,5 +1,6 @@
 import React from "react";
 
+import "../styles/Footer.css";
 const Footer: React.FC = () => {
   return (
     <footer> <p>© 2025 NatyaShastra | All rights reserved</p>

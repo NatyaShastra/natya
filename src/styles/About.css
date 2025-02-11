@@ -1,0 +1,37 @@
+.about {
+  padding: 20px;
+  text-align: center;
+}
+
+.about h2 {
+  font-size: 2rem;
+}
+
+.about p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+@media screen and (max-width: 768px) {
+  .about h2 {
+    font-size: 1.5rem;
+  }
+  .about p {
+    font-size: 1rem;
+  }
+}
+.page-container {
+  max-width: 800px; /* Adjust width to look neat */
+  margin: 0 auto; /* Centers content */
+  text-align: left; /* Aligns text properly */
+  padding: 20px;
+}
+
+ul {
+  padding-left: 20px; /* Ensures bullets stay with text */
+  text-align: left; /* Keeps list items aligned properly */
+}
+
+li {
+  margin-bottom: 10px; /* Adds spacing for better readability */
+}

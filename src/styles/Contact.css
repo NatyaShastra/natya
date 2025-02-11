@@ -1,0 +1,22 @@
+.contact {
+  text-align: center;
+  padding: 20px;
+}
+
+.contact h2 {
+  font-size: 2rem;
+}
+
+.contact-info {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .contact h2 {
+    font-size: 1.5rem;
+  }
+  .contact-info {
+    font-size: 1rem;
+  }
+}

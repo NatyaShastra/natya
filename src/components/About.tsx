@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/About.css";
 
 export const About: React.FC = () => {
   return (
@@ -11,8 +12,8 @@ export const About: React.FC = () => {
         <p><strong>"Harmony in Diversity, Happiness in Motion,"</strong> 
         – We believe that every student's learning journey is a reflection of our passion for uniting people through the art of dance.</p>
 
-        <ul>
         <h2>Bharatanatyam dance classes Online & Offline</h2>
+        <ul>
         <li>Globally recognised Bharatanatyam curriculum</li>
         <li>Expert guidance from proficient gurus⁠</li>
         <li>⁠Grade exam certifications</li>
