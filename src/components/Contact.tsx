@@ -1,5 +1,6 @@
 import React from "react";
 
+import "../styles/Contact.css";
 export const Contact: React.FC = () => {
   return (
     <div className="page-container">

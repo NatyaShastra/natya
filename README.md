@@ -53,3 +53,32 @@ export default tseslint.config({
 });
 ```
 >>>>>>> 0b8f26b (All code chagnes)
+
+
+[user]
+    name = NatyaShastra
+    email = natyashastra2018@gmail.com
+    https://github.com/NatyaShastra/natya/tree/main/src
+
+    # (1) Install Git if needed
+git --version
+
+# (2) Navigate to your project
+cd path/to/your/project
+
+# (3) Initialize Git and push to GitHub
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/NatyaShastra/natya.git
+git branch -M main
+git push -u origin main
+
+# (4) Install Netlify CLI
+npm install -g netlify-cli
+netlify login
+
+# (5) Build and Deploy React App
+npm run build
+netlify deploy
+netlify deploy --prod
