@@ -22,9 +22,9 @@ export const Navbar: React.FC = () => {
           <li><Link to="/enquiry" onClick={() => setMenuOpen(false)}>Enquiry</Link></li>
           <li><Link to="/onboarding" onClick={() => setMenuOpen(false)}>Onboard</Link></li>
           <li><Link to="/booking" onClick={() => setMenuOpen(false)}>Order</Link></li>
-          <li><Link to="/about" onClick={() => setMenuOpen(false)}>About</Link></li>
-          <li><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link></li>
-          <li><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link></li>
+          <li><Link to="/about" onClick={() => setMenuOpen(false)}>Contact</Link></li>
+          {/* <li><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link></li>
+          <li><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link></li> */}
         </ul>
       </div>
     </nav>
