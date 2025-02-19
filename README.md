@@ -82,3 +82,13 @@ netlify login
 npm run build
 netlify deploy
 netlify deploy --prod
+
+
+python --version
+python -m venv rasa_env
+rasa_env\Scripts\activate
+pip install rasa
+rasa init --no-prompt
+rasa data validate
+rasa train
+rasa shell
