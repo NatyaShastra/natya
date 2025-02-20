@@ -11,13 +11,13 @@ export const EventGallery = () => {
             <h3 style={{ background: "beige" }}>2024 Events</h3>
             <div className="event-group">
                 <div className="event-item">
-                    <h4>Natyashastra Annual Day Celebration</h4>
+                    <h4>Natyashastra Annual Day Celebration with Salangai Pooja</h4>
                     <p className="subtitle">"Event filled with grandeur and cultural performances."</p>
                     <iframe src="https://www.youtube.com/embed/Uk5cd0MzwjE" allowFullScreen></iframe>
                 </div>
                 <div className="event-item">
                     <h4>Maha Shivaratri Celebration at Brahma Kumari</h4>
-                    <p className="subtitle">"Spiritual celebration with mesmerizing dance performances."</p>
+                    <p className="subtitle">"Spiritual celebrations with mesmerizing dances"</p>
                     <iframe src="https://www.youtube.com/embed/rWVMGterEv8" allowFullScreen></iframe>
                 </div>
             </div>
@@ -47,13 +47,13 @@ export const EventGallery = () => {
                 </div>
                 <div className="event-item">
                     <h4>Shilparamam Event</h4>
-                    <p className="subtitle">"A stunning showcase of traditional dance at Shilparamam."</p>
+                    <p className="subtitle">"Stunning showcase of tradition at Shilparamam."</p>
                     <iframe src="https://www.youtube.com/embed/U9MqvNt4wN4" allowFullScreen></iframe>
                 </div>
             </div>
         </section> 
         
-    <div className="event-gallery">
+        <div className="event-gallery">
         <h1 className="s-eventgallery">Gallery</h1>
         <h2>📸 Capturing the Grace of Bharatanatyam! 📸
         Our gallery is a visual tapestry of the elegance, expressions, and energy that define NatyaShastra. Explore moments from mesmerizing performances, heartfelt practice sessions, and behind-the-scenes glimpses of our dance journey. Each picture tells a story of devotion, discipline, and the love for this ancient art form.</h2>
@@ -99,7 +99,8 @@ export const EventGallery = () => {
                   <iframe src="https://www.instagram.com/reel/DGOH8ZxS0fn/embed" allowFullScreen></iframe>
               </div>
           </div> 
-        </section></div>
+        </section>
+        </div>
     </div>
   );
 };
