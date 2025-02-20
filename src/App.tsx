@@ -6,8 +6,9 @@ import { Header } from './components/Header';
 import Footer from './components/Footer';
 import {Home } from './components/Home'
 import {About} from './components/About';
-import {Services} from './components/Services'; 
-import {Contact} from './components/Contact';  
+import {EventGallery} from './components/EventGallery';
+// import {Services} from './components/Services'; 
+// import {Contact} from './components/Contact';  
 import {Enquiry} from  './components/Enquiry';   
 import {Onboarding} from  './components/Onboarding';   
 import {Booking} from  './components/Booking';    
@@ -23,9 +24,10 @@ const App: React.FC = () => {
         <Route path="/enquiry" element={<Enquiry />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/EventGallery" element={<EventGallery />} />
         <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
+        {/* <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />} /> */}
       </Routes>
       <Footer />
     </Router>

@@ -5,8 +5,10 @@ export const About: React.FC = () => {
   return (
     <div className="page-container">
       <h2>About NatyaShastra</h2>
+        <p>Natyashastra is a passion-driven project, founded by Nalini and Iyswarya in 2017...</p>
+
       <p>
-        NatyaShastra is a community-based dance school dedicated to preserving and promoting the traditional art of Bharatanatyam. <strong>We offer both offline & online classes, </strong>
+        It is a community-based dance school dedicated to preserving and promoting the traditional art of Bharatanatyam. <strong>We offer both offline & online classes, </strong>
         making this timeless dance form accessible to all.
         
         <p><strong>"Harmony in Diversity, Happiness in Motion,"</strong> 
