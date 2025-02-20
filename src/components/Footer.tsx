@@ -3,7 +3,7 @@ import React from "react";
 import "../styles/Footer.css";
 const Footer: React.FC = () => {
   return (
-    <footer> <p>© 2025 NatyaShastra | All rights reserved</p>
+    <footer> <p style={{ color: "white" }}>© 2025 NatyaShastra | All rights reserved</p>
       <a href="https://wa.me/9160228929">WhatsApp</a>
       <a href="tel:9160228929">Call Us</a>
       <div>
