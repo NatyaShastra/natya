@@ -92,3 +92,31 @@ rasa init --no-prompt
 rasa data validate
 rasa train
 rasa shell
+
+To test if the Google Analytics tracking code is working correctly on your website, follow these steps:
+
+Deploy Your Website:
+
+Ensure that your website is deployed and accessible via a web server. If you are running it locally, make sure your local server is running.
+Open Your Website:
+
+Open your website in a web browser.
+Check Real-Time Reports in Google Analytics:
+
+Go to Google Analytics.
+Navigate to the property you set up for your website.
+Go to the "Real-Time" section in the left-hand menu.
+Check the "Overview" page to see if your visit is being tracked.
+Use Google Tag Assistant:
+
+Install the Google Tag Assistant Chrome extension.
+Open your website in a new tab.
+Click on the Google Tag Assistant icon in the Chrome toolbar.
+Enable the extension and refresh your website.
+The extension will show you if the Google Analytics tag is firing correctly.
+Check the Browser Console:
+
+Open the Developer Tools in your browser (usually by pressing F12 or Ctrl+Shift+I).
+Go to the "Console" tab.
+Look for any errors related to the Google Analytics script.
+By following these steps, you can verify that the Google Analytics tracking code is correctly integrated and tracking visitors to your website.
