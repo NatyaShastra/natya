@@ -90,8 +90,8 @@ export const Enquiry: React.FC = () => {
       questions: [
         { q: "Do you offer a summer camp?", a: "Yes, we host a summer camp that combines intensive dance training with fun activities, workshops, and performance opportunities." },
         { q: "Who can attend the summer camp?", a: "The camp is open to students of all levels, designed to boost both technique and confidence." },
-        { q: "How do I register for the summer camp?", a: "Registration must be done on or before April using our Onboard or Enquiry pages." },
-        { q: "What are summer camp durations?", a: "Summer camp usually happens in the month of April & May" }
+        { q: "How do I register for the summer camp?", a: "Registration must be done on or before April using our Onboard or Enquiry pages. For existing students, no separate registration required." },
+        { q: "What are summer camp durations and What do i learn?", a: "Summer camp usually happens in between April & June, where students will learn dance items. These performances will provide them opportunities to showcase their skills at various events throughout the year." }
       ]
     },
     {
