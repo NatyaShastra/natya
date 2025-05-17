@@ -12,6 +12,8 @@ import {EventGallery} from './components/EventGallery';
 import {Enquiry} from  './components/Enquiry';   
 import {Onboarding} from  './components/Onboarding';   
 import {Booking} from  './components/Booking';    
+import { Event } from './components/Event';
+import { Exam } from './components/Exam';
 
 const App: React.FC = () => {
   return (
@@ -24,6 +26,8 @@ const App: React.FC = () => {
         <Route path="/enquiry" element={<Enquiry />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/event" element={<Event />} />
+        <Route path="/exam" element={<Exam />} />
         <Route path="/EventGallery" element={<EventGallery />} />
         <Route path="/about" element={<About />} />
         {/* <Route path="/services" element={<Services />} />
