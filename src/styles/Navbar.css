@@ -66,13 +66,48 @@
   transition: 0.3s;
 }
 
+/* Dropdown styles for How to? */
+.dropdown {
+  position: relative;
+}
+.dropdown-title {
+  cursor: pointer; 
+  display: inline-block;
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  min-width: 120px;
+  box-shadow: 0 2px 8px rgb(250, 240, 240);
+  z-index: 100;
+  margin-top: 2px;
+}
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+  display: block;
+}
+.dropdown-menu li {
+  padding: 8px 16px;
+}
+.dropdown-menu li a { 
+  color: #020101bb;
+  text-decoration: none;
+}
+.dropdown-menu li a:hover {
+  color: #ff6600;
+}
+
 /* Responsive Design */
 @media screen and (max-width: 768px) {
   .menu-icon {
     display: flex;
     margin-right: 10%;
   }
-
+.dropdown-menu li a {
+  color: #f1ebeb;
+  text-decoration: none;
+}
   .nav-links {
     display: none;
     flex-direction: column;
@@ -95,5 +130,17 @@
   .nav-links li {
     padding: 15px;
     border-bottom: 1px solid white;
+  }
+
+  /* Mobile: show dropdown as block when nav-links open */
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    background: transparent;
+    display: none;
+  }
+  .dropdown.open .dropdown-menu,
+  .nav-links.open .dropdown .dropdown-menu {
+    display: block;
   }
 }
