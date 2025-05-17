@@ -22,7 +22,7 @@ export const Home: React.FC = () => (
         <Link to="/booking" className="btn">I want to Order</Link>
         
         <p>Are you an existing customer?</p>
-        <Link to="https://books.zohosecure.in/portal/natyashastra/signin#" className="btn">I want to Renew</Link>
+        <Link to="https://books.zohosecure.in/portal/natyashastra/signin#" className="btn">I want to Renew / Make payment</Link>
       </div>
     </div>
   </div>
