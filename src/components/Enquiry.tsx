@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import "../styles/Enquiry.css";
+import { Link } from "react-router-dom";
 
 export const Enquiry: React.FC = () => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -33,6 +35,7 @@ export const Enquiry: React.FC = () => {
         { q: "What is the fee structure?", a: "Fees vary by location, age group, and tenure. Contact us for details." },
         { q: "Are there any discounts available?", a: "Yes, we offer discounts for younger students and tenure-based packages." },
         { q: "What are the payment options?", a: "We accept online payments, UPI, net banking. CASH NOT ACCEPTED STRICTLY." },
+        { q: "What are the due dates for Payment renewals?", a: "You will have invoices for Jan 5, April 5, June 5 & Oct 5" },
         // { q: "How do I update my enrollment or payment details?", a: "Reach out via the 'Enquiry' section to update your details." }
       ]
     },
@@ -52,14 +55,6 @@ export const Enquiry: React.FC = () => {
         { q: "How do I access the Adavus folder?", a: "Upon enrollment, your permissions are approved to access Adavus folder." }
       ]
     },
-    // {
-    //   category: "Students Tracker",
-    //   questions: [
-    //     { q: "What is the Students Tracker?", a: "The Students Tracker is our internal system to monitor progress, attendance, and performance of each student." },
-    //     { q: "How can I check my progress?", a: "Registered students can log into the portal to view their performance reports and attendance records." },
-    //     { q: "Can parents access the Students Tracker?", a: "Yes, parents of younger students are provided access to monitor their child's progress." }
-    //   ]
-    // },
     {
       category: "Class Policies",
       questions: [
@@ -71,9 +66,9 @@ export const Enquiry: React.FC = () => {
     {
       category: "Events & Performances",
       questions: [
-        { q: "Will I have opportunities to perform?", a: "Yes! We organize events where students can showcase their skills." },
-        { q: "Where can I view event galleries and performance videos?", a: "Visit the 'Event Gallery' section to see photos and videos from our events." },
-        { q: "How are these events organized?", a: "Events are organized by our team in collaboration with local cultural organizations and are announced on our website and social media channels." },
+        { q: "Will I have opportunities to perform?", a: "Yes! We organize events where students can showcase their skills. See upcoming events and participants on the Event page." },
+        { q: "Where can I view event galleries and performance videos?", a: "Visit the Gallery page to see photos, videos, and details from our events." },
+        { q: "How are these events organized?", a: "Events are organized by our team in collaboration with local cultural organizations and are announced on our Event page and social media channels." },
         { q: "Can I participate if I'm a new student?", a: "Participation is based on skill level and readiness. New students may be encouraged to join after an initial period of training decided by the Guru." }
       ]
     },
@@ -97,10 +92,10 @@ export const Enquiry: React.FC = () => {
     {
       category: "Grade Examination Eligibility and Certification",
       questions: [
-        { q: "What are the grade examination requirements?", a: "Grade examinations assess proficiency in dance techniques based on attendance, progress, and performance." },
-        { q: "Who is eligible for grade examinations?", a: "Eligibility is determined by our instructors based on each student's progress and performance." },
+        { q: "What are the grade examination requirements?", a: "Grade examinations assess proficiency in dance techniques based on attendance, progress, and performance. See the Exam page for details." },
+        { q: "Who is eligible for grade examinations?", a: "Eligibility is determined by our instructors based on each student's progress and performance. The Exam page lists eligible candidates." },
         { q: "What certifications do you offer?", a: "Successful candidates receive recognized certifications that reflect their proficiency in dance after their Salangai Pooja." },
-        { q: "How can I apply for a grade examination?", a: "Applications are accepted through our Onboard page or directly at our studio after an internal review." }
+        { q: "How can I apply for a grade examination?", a: "Applications are accepted through our Exam page or directly at our studio after an internal review." }
       ]
     },
     {
@@ -113,34 +108,48 @@ export const Enquiry: React.FC = () => {
   ];
 
   return (
-    <div className="page-container">
-      <h2>Join the WhatsApp group & Enquiry Now</h2>
-      <p>Want to know more? Join the group & message us. (Provide student name, age, place)</p>
-      <a href="https://chat.whatsapp.com/HxXDfnafyFO6ykxdN97DYi" className="btn" target="_blank" rel="noopener noreferrer">
-        Enquire Now
-      </a>
+    <div className="enquiry-bg">
+      <div className="enquiry-content">
+        <h2>Join the WhatsApp group & Enquiry Now</h2>
+        <p>Want to know more? Join the group & message us. (Provide student name, age, place)</p>
+        <a href="https://chat.whatsapp.com/HxXDfnafyFO6ykxdN97DYi" className="btn" target="_blank" rel="noopener noreferrer">
+          Enquire Now
+        </a>
 
-      <h3>Frequently Asked Questions (FAQ)</h3>
-      <div className="faq-section">
-        {faqData.map((categoryData, index) => (
-          <div key={index} className="faq-category">
-            <h4 className="faq-category-title" onClick={() => toggleCategory(categoryData.category)}>
-              {categoryData.category} {openCategory === categoryData.category ? "▲" : "▼"}
-            </h4>
-            {openCategory === categoryData.category && (
-              <ul className="faq-list">
-                {categoryData.questions.map((item, idx) => (
-                  <li key={idx} className="faq-item">
-                    <strong>{item.q}</strong>
-                    <p>{item.a}</p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ))}
+        {/* Event Section */}
+        <section className="enquiry-section">
+          <h3>Events</h3>
+          <p>See upcoming events, dates, venues, and participants below or visit the <Link to="/event">Event page</Link> for more details.</p>
+        </section>
+
+        {/* Exam Section */}
+        <section className="enquiry-section">
+          <h3>Exams</h3>
+          <p>Find out how to apply for exams, eligibility, and candidate lists below or visit the <Link to="/exam">Exam page</Link> for more details.</p>
+        </section>
+
+        <h3>Frequently Asked Questions (FAQ)</h3>
+        <div className="faq-section">
+          {faqData.map((categoryData, index) => (
+            <div key={index} className="faq-category">
+              <h4 className="faq-category-title" onClick={() => toggleCategory(categoryData.category)}>
+                {categoryData.category} {openCategory === categoryData.category ? "▲" : "▼"}
+              </h4>
+              {openCategory === categoryData.category && (
+                <ul className="faq-list">
+                  {categoryData.questions.map((item, idx) => (
+                    <li key={idx} className="faq-item">
+                      <strong>{item.q}</strong>
+                      {/* Render answer as HTML to support anchor tags */}
+                      <p dangerouslySetInnerHTML={{ __html: item.a }} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-       
     </div>
   );
 };

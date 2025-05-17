@@ -1,9 +1,9 @@
 import React from "react";
-import "../styles/Booking.css"; // Updated CSS file name
+import "../styles/Booking.css";
 
-export const Booking: React.FC = () => {
-  return (
-    <div className="booking-container">
+export const Booking: React.FC = () => (
+  <div className="order-bg">
+    <div className="order-content">
       <h2>Explore the NatyaShastra Cultural Shoppe</h2>
       <p>
         Order your dance books, uniforms, and accessories easily at our store. 
@@ -33,7 +33,8 @@ export const Booking: React.FC = () => {
           NatyaShastra Payments Portal
         </a>.
       </p>
-
     </div>
-  );
-};
+  </div>
+);
+
+export default Booking;
