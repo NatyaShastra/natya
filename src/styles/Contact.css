@@ -12,6 +12,28 @@
   margin-top: 10px;
 }
 
+/* Contact page background and content styling */
+.contact-bg {
+  min-height: 100vh;
+  background: linear-gradient(rgba(30, 10, 10, 0.7), rgba(30, 10, 10, 0.7)),
+    url('/img_contact.JPG') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 0;
+}
+
+.contact-content {
+  background: rgba(255,255,255,0.85);
+  border-radius: 16px;
+  padding: 32px 24px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  margin-top: 40px;
+}
+
 @media screen and (max-width: 768px) {
   .contact h2 {
     font-size: 1.5rem;

@@ -83,6 +83,43 @@ iframe[src*="instagram.com"] {
   height: 550px;
 }
 
+/* Event page background and content styling */
+.event-bg {
+  min-height: 100vh;
+  background: linear-gradient(rgba(30, 10, 10, 0.7), rgba(30, 10, 10, 0.7)),
+    url('/img_event.JPG') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 0;
+}
+
+.event-content {
+  background: rgba(255,255,255,0.85);
+  border-radius: 16px;
+  padding: 32px 24px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  margin-top: 40px;
+}
+
+.event-content h2 {
+  color: #a13c1f;
+  margin-bottom: 24px;
+}
+
+.event-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.event-content li {
+  margin-bottom: 24px;
+  font-size: 1.1rem;
+}
+
 /* Mobile view adjustments */
 @media (max-width: 600px) {
   .event-section{
