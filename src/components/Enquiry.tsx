@@ -115,6 +115,9 @@ export const Enquiry: React.FC = () => {
         <a href="https://chat.whatsapp.com/HxXDfnafyFO6ykxdN97DYi" className="btn" target="_blank" rel="noopener noreferrer">
           Enquire Now
         </a>
+        <button className="btn" style={{marginLeft: '10px', background: '#0077ff'}} onClick={() => window.tidioChatApi?.open()}>
+          Chat with us
+        </button>
 
         {/* Event Section */}
         <section className="enquiry-section">
@@ -148,6 +151,12 @@ export const Enquiry: React.FC = () => {
               )}
             </div>
           ))}
+        </div>
+        <div style={{marginTop: '20px'}}>
+          <span>Still have questions? </span>
+          <button className="btn" style={{background: '#0077ff'}} onClick={() => window.tidioChatApi?.open()}>
+            Chat with us
+          </button>
         </div>
       </div>
     </div>

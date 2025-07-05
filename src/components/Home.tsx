@@ -20,6 +20,9 @@ export const Home: React.FC = () => (
         <Link to="/enquiry" className="btn">I want to Enquire</Link>
         <Link to="/onboarding" className="btn">I want to Onboard</Link>
         <Link to="/booking" className="btn">I want to Order</Link>
+        <button className="btn" style={{background: '#0077ff'}} onClick={() => window.tidioChatApi?.open()}>
+          Chat with us
+        </button>
         
         <p>Are you an existing customer?</p>
         <Link to="https://books.zohosecure.in/portal/natyashastra/signin#" className="btn">I want to Renew / Make payment</Link>

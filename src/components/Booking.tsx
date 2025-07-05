@@ -33,6 +33,9 @@ export const Booking: React.FC = () => (
           NatyaShastra Payments Portal
         </a>.
       </p>
+      <button className="btn" style={{background: '#0077ff'}} onClick={() => window.tidioChatApi?.open()}>
+        Need help? Chat with us
+      </button>
     </div>
   </div>
 );
