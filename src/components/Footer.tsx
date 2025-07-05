@@ -1,9 +1,17 @@
 import React from "react";
 
+// Add this to declare tidioChatApi on the window object
+declare global {
+  interface Window {
+    tidioChatApi?: { open: () => void };
+  }
+}
+
 import "../styles/Footer.css";
 const Footer: React.FC = () => {
   return (
-    <footer> <p style={{ color: "white" }}>© 2025 NatyaShastra | All rights reserved</p>
+    <footer>
+      <p style={{ color: "white" }}>© 2025 NatyaShastra | All rights reserved</p>
       <a href="https://wa.me/9160228929">WhatsApp</a>
       <a href="tel:9160228929">Call Us</a>
       <div>
@@ -25,6 +33,9 @@ const Footer: React.FC = () => {
           Instagram
         </a>
       </div>
+      <button className="btn" style={{background: '#0077ff', marginTop: '10px'}} onClick={() => window.tidioChatApi?.open()}>
+        Need help? Chat with us
+      </button>
     </footer>
   );
 };
