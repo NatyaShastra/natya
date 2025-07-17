@@ -1,43 +1,27 @@
 import React from "react";
 import "../styles/Booking.css";
 
-export const Booking: React.FC = () => (
-  <div className="order-bg">
-    <div className="order-content">
-      <h2>Explore the NatyaShastra Cultural Shoppe</h2>
-      <p>
-        Order your dance books, uniforms, and accessories easily at our store. 
-        We offer a Cash on Delivery (COD) option, and you can conveniently pay 
-        using the payment invoices sent to your account.
-      </p>
+export const Booking: React.FC = () => {
+  return (
+    <div className="booking-container">
+      <h2>Provide your uniform and grade book details & submit the form</h2>
+      <p>For more details on payments, venue, and timings, click enquiry.</p>
 
-      <p>
-        To explore our store, check out our:
-        <a 
-          href="https://natyashastra.myinstamojo.com/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          style={{ marginLeft: "5px" }}
-        >
-          NatyaShastra Essentials Store 
-        </a>.
-      </p>
-      <p>
-        To access your payment invoices and manage orders, visit:
-        <a 
-          href="https://books.zohosecure.in/portal/natyashastra/signin#" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          style={{ marginLeft: "5px" }}
-        >
-          NatyaShastra Payments Portal
-        </a>.
-      </p>
-      <button className="btn" style={{background: '#0077ff'}} onClick={() => window.tidioChatApi?.open()}>
-        Need help? Chat with us
-      </button>
+      {/* Embedded Google Form */}
+      <iframe
+        src="https://forms.gle/cgH3yYX4z8613p7R6"
+        width="100%"
+        height="1200px"
+        frameBorder="0"
+        marginHeight={0}
+        marginWidth={0}
+        allowFullScreen
+        title="Booking Form"
+      >
+        Loading…
+      </iframe>
     </div>
-  </div>
-);
+  );
+};
 
 export default Booking;
