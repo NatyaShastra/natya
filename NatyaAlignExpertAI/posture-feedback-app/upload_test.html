@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Dance Video</title>
+</head>
+<body>
+    <h2>Upload Dance Video for Posture Feedback</h2>
+    <form id="uploadForm" enctype="multipart/form-data" method="POST" action="http://localhost:5000/upload">
+        <input type="file" name="video" accept="video/*" required>
+        <button type="submit">Upload</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        document.getElementById('uploadForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Uploading...';
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.textContent = JSON.stringify(data, null, 2);
+                } else {
+                    resultDiv.textContent = 'Error: ' + response.statusText;
+                }
+            } catch (err) {
+                resultDiv.textContent = 'Error: ' + err;
+            }
+        };
+    </script>
+</body>
+</html>
