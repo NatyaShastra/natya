@@ -1,0 +1,119 @@
+.page-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #ff6600;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.3s ease-in-out;
+}
+
+.btn:hover {
+  background-color: #cc5500;
+}
+
+/* ✅ Make it Responsive */
+@media (max-width: 768px) {
+  .page-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+
+/* Exam page background and content styling */
+.exam-bg {
+  min-height: 100vh;
+  background: linear-gradient(rgba(30, 10, 10, 0.7), rgba(30, 10, 10, 0.7)),
+    url('/img_exam.JPG') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 0;
+}
+
+.exam-content {
+  background: rgba(255,255,255,0.85);
+  border-radius: 16px;
+  padding: 32px 24px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  margin-top: 40px;
+}
+
+.exam-content h2 {
+  color: #a13c1f;
+  margin-bottom: 24px;
+}
+
+.exam-list {
+  list-style: disc;
+  padding-left: 24px;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.exam-list li {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  text-align: left;
+}
+
+/* Onboarding page background and content styling */
+.onboard-bg {
+  min-height: 100vh;
+  background: linear-gradient(rgba(30, 10, 10, 0.7), rgba(30, 10, 10, 0.7)),
+    url('/img_onboard.JPG') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 0;
+}
+
+.onboard-content {
+  background: rgba(255,255,255,0.85);
+  border-radius: 16px;
+  padding: 32px 24px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  margin-top: 40px;
+}

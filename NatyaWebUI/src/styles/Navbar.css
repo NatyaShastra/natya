@@ -1,0 +1,146 @@
+/* Navbar Styles */
+.navbar {
+  background-color: #460d0d;
+  color: white;
+  width: 100%;
+  z-index: 1000; 
+  margin-top: 10px; /* Space between header and navbar */
+}
+
+/* Navbar Container */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  height:55px;
+}
+
+/* Navbar Links */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+  padding: 0;
+}
+
+/* Navbar Items */
+.nav-links li {
+  padding: 5px 10px; /* Reduced padding */
+}
+
+/* Navbar Links Styling */
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ff6600;
+}
+
+/* Navbar Logo */
+.nav-logo {
+  font-size: 28px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white !important;
+  margin-left: 15px;
+}
+
+/* Mobile Menu */
+.menu-icon {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 5px;
+  transition: 0.3s;
+}
+
+/* Dropdown styles for How to? */
+.dropdown {
+  position: relative;
+}
+.dropdown-title {
+  cursor: pointer; 
+  display: inline-block;
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  min-width: 120px;
+  box-shadow: 0 2px 8px rgb(250, 240, 240);
+  z-index: 100;
+  margin-top: 2px;
+}
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+  display: block;
+}
+.dropdown-menu li {
+  padding: 8px 16px;
+}
+.dropdown-menu li a { 
+  color: #020101bb;
+  text-decoration: none;
+}
+.dropdown-menu li a:hover {
+  color: #ff6600;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .menu-icon {
+    display: flex;
+    margin-right: 10%;
+  }
+.dropdown-menu li a {
+  color: #f1ebeb;
+  text-decoration: none;
+}
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    top: 60px; /* Push below navbar */
+    left: 0;
+    text-align: center;
+    padding: 10px 0;
+    transition: all 0.3s ease-in-out;
+    z-index: 999;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links li {
+    padding: 15px;
+    border-bottom: 1px solid white;
+  }
+
+  /* Mobile: show dropdown as block when nav-links open */
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    background: transparent;
+    display: none;
+  }
+  .dropdown.open .dropdown-menu,
+  .nav-links.open .dropdown .dropdown-menu {
+    display: block;
+  }
+}
