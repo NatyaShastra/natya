@@ -1,0 +1,7 @@
+# Data pipeline outputs
+__pycache__/
+datasets/processed/
+datasets/manifests/
+trained_model/model_generated.pkl
+*.npz
+*.mp4
