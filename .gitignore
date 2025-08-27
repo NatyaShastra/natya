@@ -1,3 +1,11 @@
+# Python cache and virtual environment
+__pycache__/
+NatyaAlignExpertAI/posture-feedback-app/__pycache__/
+NatyaAlignExpertAI/posture-feedback-app/venv/
+NatyaAlignExpertAI/posture-feedback-app/trained_model/
+NatyaAlignExpertAI/posture-feedback-app/uploads/
+trained_model/
+uploads/
 # Logs
 logs
 *.log

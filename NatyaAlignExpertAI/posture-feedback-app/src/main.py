@@ -24,17 +24,20 @@ def upload():
     # Analyze the posture in the uploaded video
     analysis_results = analyze_posture(video_path)
 
-    # Generate feedback and annotated video
+    # Generate feedback and annotated video (side-by-side with reference)
     from feedback_generator import FeedbackGenerator
     model_path = '/workspaces/natya/NatyaAlignExpertAI/posture-feedback-app/trained_model/model.pkl'
     generator = FeedbackGenerator(model_path)
     feedback = generator.analyze_posture(video_path)
     annotated_video_path = video_path.replace('.mp4', '_annotated.mp4')
-    generator.annotate_video_with_feedback(video_path, annotated_video_path)
+    # Use reference video path (update as needed)
+    reference_video_path = '/workspaces/natya/NatyaAlignExpertAI/posture-feedback-app/uploads/ref_video.mp4'
+    generator.annotate_video_with_feedback(video_path, reference_video_path, annotated_video_path)
 
+    catchy_text = "🎉 Your personalized dance feedback video is ready! Download and review your performance side-by-side with the reference."
     return jsonify({
-        'feedback': feedback,
-        'annotated_video': annotated_video_path
+        'message': catchy_text,
+        'video_download_path': annotated_video_path
     }), 200
 
 
