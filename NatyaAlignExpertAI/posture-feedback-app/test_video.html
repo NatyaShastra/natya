@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Video Playback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .video-container {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Video Playback</h1>
+    
+    <div class="video-container">
+        <h2>TestVideo2_annotated.mp4</h2>
+        <p>Playing TestVideo2_annotated.mp4 using raw_video endpoint</p>
+        <video controls width="100%" id="testVideo2Player">
+            <source src="http://localhost:5000/raw_video/TestVideo2_annotated.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p><a href="http://localhost:5000/raw_video/TestVideo2_annotated.mp4" target="_blank">Open video in new tab (raw_video endpoint)</a></p>
+    </div>
+    
+    <div class="video-container">
+        <h2>Raw Video Endpoint</h2>
+        <p>Playing TestVideo_annotated.mp4 using raw_video endpoint</p>
+        <video controls width="100%" id="rawVideoPlayer">
+            <source src="http://localhost:5000/raw_video/TestVideo_annotated.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p><a href="http://localhost:5000/raw_video/TestVideo_annotated.mp4" target="_blank">Open video in new tab (raw_video endpoint)</a></p>
+    </div>
+    
+    <div class="video-container">
+        <h2>Direct Video Link</h2>
+        <p>Playing TestVideo_annotated.mp4 using uploads endpoint</p>
+        <video controls width="100%" id="videoPlayer">
+            <source src="http://localhost:5000/uploads/TestVideo_annotated.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p><a href="http://localhost:5000/uploads/TestVideo_annotated.mp4" target="_blank">Open video in new tab</a></p>
+    </div>
+    
+    <div class="video-container">
+        <h2>Alternative Video Route</h2>
+        <p>Using alternative route to play TestVideo_annotated.mp4</p>
+        <video controls width="100%" id="altVideoPlayer">
+            <source src="http://localhost:5000/video/TestVideo_annotated.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p><a href="http://localhost:5000/video/TestVideo_annotated.mp4" target="_blank">Open video in new tab (alternative route)</a></p>
+    </div>
+    
+    <div class="video-container">
+        <h2>Original Reference Video</h2>
+        <p>Playing a reference video to test player functionality</p>
+        <video controls width="100%" id="refVideoPlayer">
+            <source src="http://localhost:5000/uploads/ref_video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p><a href="http://localhost:5000/uploads/ref_video.mp4" target="_blank">Open reference video in new tab</a></p>
+    </div>
+    
+    <div class="video-container">
+        <h2>TestVideo2 Video</h2>
+        <p>Playing TestVideo2.mp4</p>
+        <video controls width="100%" id="testVideo2Player">
+            <source src="http://localhost:5000/raw_video/TestVideo2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p><a href="http://localhost:5000/raw_video/TestVideo2.mp4" target="_blank">Open video in new tab</a></p>
+    </div>
+    
+    <script>
+        // Log video loading errors to help debug
+        document.getElementById('videoPlayer').addEventListener('error', function(e) {
+            console.error('Error loading video:', e);
+        });
+        
+        document.getElementById('refVideoPlayer').addEventListener('error', function(e) {
+            console.error('Error loading reference video:', e);
+        });
+    </script>
+</body>
+</html>
