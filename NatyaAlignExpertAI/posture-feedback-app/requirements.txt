@@ -1,3 +1,5 @@
+Pillow
+flask-cors
 Flask>=3.0.0
 opencv-python==4.5.5.64
 mediapipe==0.10.21
