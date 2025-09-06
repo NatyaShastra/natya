@@ -3,35 +3,381 @@
 <head>
     <meta charset="UTF-8">
     <title>Upload Dance Video</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input[type="file"], button {
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+        }
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+        .video-container {
+            margin-top: 20px;
+        }
+        .friendly-feedback {
+            background-color: #f0f8ff;
+            border-left: 4px solid #4CAF50;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .friendly-feedback p {
+            margin: 10px 0;
+        }
+        .processing-options {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .processing-options h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #333;
+        }
+        .option-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .option-group label {
+            display: inline;
+            margin-right: 10px;
+            font-weight: normal;
+        }
+        .option-group select, .option-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+        .option-description {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+            margin-bottom: 8px;
+        }
+        #processingStatus {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            display: none;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+    </style>
 </head>
 <body>
     <h2>Upload Dance Video for Posture Feedback</h2>
+    <div class="friendly-feedback" id="uploadInstructions">
+        <h3>How to Upload Your Dance Video</h3>
+        <ul>
+            <li>Full step must be visible: head to toe in frame.</li>
+            <li>Record with good clarity (high resolution, stable camera).</li>
+            <li>Smile and look at the camera while performing.</li>
+            <li>Use a plain white background.</li>
+            <li>Upload strictly only 10 seconds (video longer than 10 seconds will be rejected).</li>
+            <li>Ensure good lighting (avoid shadows).</li>
+            <li>Wear appropriate dance attire.</li>
+            <li>Avoid background distractions and noise.</li>
+        </ul>
+        <p style="color: #d32f2f; font-weight: bold;">If your video is longer than 10 seconds, you will be asked to upload a shorter one.</p>
+    </div>
     <form id="uploadForm" enctype="multipart/form-data" method="POST" action="http://localhost:5000/upload">
-        <input type="file" name="video" accept="video/*" required>
-        <button type="submit">Upload</button>
+        <div class="form-group">
+            <label for="danceStep">Select Dance Step:</label>
+            <select id="danceStep" name="danceStep" required>
+                <option value="thattadavu" selected>thattadavu</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="modelSelect">Choose Model:</label>
+            <select id="modelSelect" name="model">
+                <option value="strict" selected>Strict Bharatanatyam Model</option>
+                <option value="standard">Standard Model</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="videoFile">Upload Dance Video:</label>
+            <input id="videoFile" type="file" name="video" accept="video/*" required>
+        </div>
+        
+        <div class="processing-options">
+            <h3>Processing Options</h3>
+            <p class="option-description">Adjust these settings to balance processing speed vs. quality</p>
+            
+            <div class="option-group">
+                <label for="frameSampleRate">Frame Sampling:</label>
+                <select id="frameSampleRate" name="frameSampleRate">
+                    <option value="1">Highest Quality (Slowest)</option>
+                    <option value="2">High Quality</option>
+                    <option value="3" selected>Balanced</option>
+                    <option value="5">Fast</option>
+                    <option value="10">Fastest (Lowest Quality)</option>
+                </select>
+                <p class="option-description">Controls how many frames are processed. Higher values = faster processing but less accurate feedback.</p>
+            </div>
+
+            
+            <div class="option-group">
+                <label for="downscale">Video Downscaling:</label>
+                <input type="checkbox" id="downscale" name="downscale" value="true" checked>
+                <label for="downscale">Enable</label>
+                <p class="option-description">Reduces video resolution for faster processing. Recommended for most videos.</p>
+            </div>
+            
+            <div class="option-group">
+                <label for="targetWidth">Target Width:</label>
+                <select id="targetWidth" name="targetWidth">
+                    <option value="320">320px (Fastest)</option>
+                    <option value="480">480px (Fast)</option>
+                    <option value="640" selected>640px (Balanced)</option>
+                    <option value="800">800px (High Quality)</option>
+                    <option value="1280">1280px (Original/Highest Quality)</option>
+                </select>
+                <p class="option-description">Lower resolution = faster processing but less detail.</p>
+            </div>
+        </div>
+        
+        <button type="submit">Upload and Get Feedback</button>
+        
+        <div id="processingStatus" style="display: none;">
+            <p>Processing your video... This may take a few minutes depending on video length and processing options.</p>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
+            </div>
+            <p id="statusText">Uploading video...</p>
+        </div>
     </form>
+    
     <div id="result"></div>
+    <div id="videoContainer" class="video-container"></div>
+    
     <script>
+        // Always show only 'thattadavu' in the dance step dropdown
+        window.addEventListener('DOMContentLoaded', () => {
+            const selectElement = document.getElementById('danceStep');
+            selectElement.innerHTML = '';
+            const option = document.createElement('option');
+            option.value = 'Thattadavu - Step 1';
+            option.textContent = 'Thattadavu - Step 1';
+            option.selected = true;
+            selectElement.appendChild(option);
+
+            // Set up checkbox-select dependency
+            const downscaleCheckbox = document.getElementById('downscale');
+            const targetWidthSelect = document.getElementById('targetWidth');
+            downscaleCheckbox.addEventListener('change', function() {
+                targetWidthSelect.disabled = !this.checked;
+            });
+        });
+
         document.getElementById('uploadForm').onsubmit = async function(e) {
             e.preventDefault();
             const form = e.target;
             const formData = new FormData(form);
             const resultDiv = document.getElementById('result');
-            resultDiv.textContent = 'Uploading...';
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    resultDiv.textContent = JSON.stringify(data, null, 2);
-                } else {
-                    resultDiv.textContent = 'Error: ' + response.statusText;
-                }
-            } catch (err) {
-                resultDiv.textContent = 'Error: ' + err;
+            const videoContainer = document.getElementById('videoContainer');
+            const processingStatus = document.getElementById('processingStatus');
+            const statusText = document.getElementById('statusText');
+            const progressBarFill = document.getElementById('progressBarFill');
+
+            // Strictly check video duration before upload
+            const videoInput = document.getElementById('videoFile');
+            const file = videoInput.files[0];
+            if (!file) {
+                resultDiv.textContent = 'Please select a video file.';
+                resultDiv.className = '';
+                return;
             }
+            // Create a video element to check duration
+            const url = URL.createObjectURL(file);
+            const tempVideo = document.createElement('video');
+            tempVideo.preload = 'metadata';
+            tempVideo.src = url;
+            tempVideo.onloadedmetadata = async function() {
+                URL.revokeObjectURL(url);
+                if (tempVideo.duration > 10) {
+                    resultDiv.innerHTML = '<span style="color:#d32f2f;font-weight:bold;">Error: Please upload a video of 10 seconds or less.</span>';
+                    resultDiv.className = '';
+                    return;
+                }
+
+                // Update form data based on checkbox state
+                if (!document.getElementById('downscale').checked) {
+                    formData.set('downscale', 'false');
+                }
+
+                // Clear previous results
+                resultDiv.textContent = 'Uploading and analyzing your dance video...';
+                resultDiv.className = 'loading';
+                videoContainer.innerHTML = '';
+
+                // Show processing status
+                processingStatus.style.display = 'block';
+                statusText.textContent = 'Uploading video...';
+                progressBarFill.style.width = '10%';
+
+                try {
+                    // Start the upload
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    // Update progress for different stages
+                    progressBarFill.style.width = '30%';
+                    statusText.textContent = 'Video uploaded. Processing landmarks...';
+
+                    setTimeout(() => {
+                        progressBarFill.style.width = '50%';
+                        statusText.textContent = 'Analyzing dance posture...';
+                    }, 2000);
+
+                    setTimeout(() => {
+                        progressBarFill.style.width = '70%';
+                        statusText.textContent = 'Generating feedback...';
+                    }, 4000);
+
+                    setTimeout(() => {
+                        progressBarFill.style.width = '90%';
+                        statusText.textContent = 'Creating annotated video...';
+                    }, 6000);
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        resultDiv.className = '';
+
+                        // Complete the progress bar
+                        progressBarFill.style.width = '100%';
+                        statusText.textContent = 'Processing complete!';
+
+                        // Hide the processing status after a short delay
+                        setTimeout(() => {
+                            processingStatus.style.display = 'none';
+                        }, 1000);
+
+                        // Create feedback HTML content
+                        let feedbackHtml = '';
+
+
+                        // Display user-friendly feedback with highlighted score, summary, and reasoning
+                        if (data.user_friendly_feedback && Array.isArray(data.user_friendly_feedback)) {
+                            feedbackHtml = '<h3 style="color:#4CAF50;">Dance Feedback Summary</h3><div class="friendly-feedback">';
+                            // Highlight score and summary
+                            if (data.user_friendly_feedback.length > 0) {
+                                // Score line
+                                feedbackHtml += `<div style='font-size:1.3em;margin-bottom:8px;'>${data.user_friendly_feedback[0]}</div>`;
+                            }
+                            if (data.user_friendly_feedback.length > 1) {
+                                // Step name
+                                feedbackHtml += `<div style='font-weight:bold;color:#333;margin-bottom:6px;'>${data.user_friendly_feedback[1]}</div>`;
+                            }
+                            if (data.user_friendly_feedback.length > 2) {
+                                // Summary
+                                feedbackHtml += `<div style='color:#1976d2;margin-bottom:6px;'>${data.user_friendly_feedback[2]}</div>`;
+                            }
+                            if (data.user_friendly_feedback.length > 3) {
+                                // Reasoning
+                                feedbackHtml += `<div style='color:#555;margin-bottom:6px;'>${data.user_friendly_feedback[3]}</div>`;
+                            }
+                            if (data.user_friendly_feedback.length > 4) {
+                                // How scores are rated
+                                feedbackHtml += `<div style='font-size:0.95em;color:#888;margin-top:10px;'>${data.user_friendly_feedback[4]}</div>`;
+                            }
+                            feedbackHtml += '</div>';
+                        } else if (data.user_friendly_feedback && typeof data.user_friendly_feedback === 'string') {
+                            feedbackHtml = '<h3 style="color:#4CAF50;">Dance Feedback Summary</h3><div class="friendly-feedback">';
+                            feedbackHtml += `<p>${data.user_friendly_feedback}</p>`;
+                            feedbackHtml += '</div>';
+                        } else {
+                            // Fall back to regular feedback if user-friendly version not available
+                            feedbackHtml = '<h3>Feedback:</h3><ul>';
+                            data.feedback.forEach(item => {
+                                feedbackHtml += `<li>${item}</li>`;
+                            });
+                            feedbackHtml += '</ul>';
+                        }
+
+                        // Set the feedback HTML content
+                        resultDiv.innerHTML = feedbackHtml;
+
+                        // Add video player for the annotated video
+                        if (data.annotated_video) {
+                            // Construct the full URL to the video using the raw_video endpoint
+                            const videoUrl = "http://localhost:5000" + data.annotated_video;
+                            console.log("Raw Video URL:", videoUrl);
+
+                            videoContainer.innerHTML = `
+                                <h3>Annotated Video:</h3>
+                                <video controls width="100%">
+                                    <source src="${videoUrl}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <p><a href="${videoUrl}" target="_blank">Open video in new tab</a></p>
+                                <p>If the video doesn't load, <a href="http://localhost:5000/test_video" target="_blank">try the test page</a></p>
+                            `;
+                        }
+                    } else {
+                        resultDiv.className = '';
+                        resultDiv.textContent = 'Error: ' + response.statusText;
+                        processingStatus.style.display = 'none';
+                    }
+                } catch (err) {
+                    resultDiv.className = '';
+                    resultDiv.textContent = 'Error: ' + err;
+                    processingStatus.style.display = 'none';
+                }
+            };
+            tempVideo.onerror = function() {
+                resultDiv.innerHTML = '<span style="color:#d32f2f;font-weight:bold;">Error: Unable to read video file. Please upload a valid video.</span>';
+                resultDiv.className = '';
+            };
         };
     </script>
 </body>

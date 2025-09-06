@@ -10,45 +10,30 @@ from ffmpeg_utils import cv2_frames_to_ffmpeg_video
 import subprocess
 
 class FeedbackGenerator:
-    def __init__(self, model_path=None):
-        """Initialize the FeedbackGenerator with a pre-trained model."""
-        # Use strict model by default
-        if model_path is None:
-            model_path = "/workspaces/natya/NatyaAlignExpertAI/posture-feedback-app/trained_model/model_strict.pkl"
-        with open(model_path, 'rb') as model_file:
-            try:
-                # Try to load a tuple (model, label_encoder, step_map)
-                model_data = pickle.load(model_file)
-                if isinstance(model_data, tuple) and len(model_data) >= 2:
-                    if len(model_data) >= 3:
-                        self.model, self.label_encoder, self.step_map = model_data
-                        print(f"Loaded model with step_map: {len(self.step_map) if self.step_map else 0} steps")
-                    else:
-                        self.model, self.label_encoder = model_data
-                        self.step_map = None
-                        print("Loaded model with label encoder but no step_map")
-                else:
-                    # Single model without label encoder
-                    self.model = model_data
-                    self.label_encoder = None
-                    self.step_map = None
-                    print("Loaded model without label encoder or step_map")
-            except Exception as e:
-                print(f"Error loading model components: {e}")
-                # Fallback to just loading the model
-                model_file.seek(0)
-                self.model = pickle.load(model_file)
-                self.label_encoder = None
-                self.step_map = None
+    def annotate_video_with_feedback(self, video_path, output_path, specified_step=None, frame_sample_rate=3):
+        """
+        Create an annotated video with feedback overlaid.
+        
+        Args:
+            video_path: Path to the input video
+            output_path: Path to save the output video
+            specified_step: Optional dance step name
+            frame_sample_rate: Only process 1 out of every N frames (default: 3)
+                               Higher values = faster processing but lower quality
+        
+        Returns:
+            Path to the annotated video if successful, None otherwise
+            List of feedback items
+        """
+        # Store all processed frames here in case we need to use ffmpeg fallback
+        all_processed_frames = []
+        
+        try:
+            cap = cv2.VideoCapture(video_path)
+            if not cap.isOpened():
+                print(f"Error: Could not open video file: {video_path}")
+                return None, []
                 
-        self.mp_pose = solutions.pose.Pose(
-            static_image_mode=False, 
-            model_complexity=2, 
-            enable_segmentation=True, 
-            min_detection_confidence=0.5, 
-            min_tracking_confidence=0.5
-        )
-    
     def _finalize_with_ffmpeg(self, video_path):
         """
         Ensure a video uses H.264 codec for maximum browser compatibility.
@@ -108,87 +93,37 @@ class FeedbackGenerator:
             print(f"Error finalizing video with ffmpeg: {str(e)}")
             return video_path
     
-    def _extract_landmarks(self, landmarks):
-        """Extract landmarks from a MediaPipe pose landmarks object"""
-        # Extract the raw landmarks
-        landmarks_array = np.array([[lm.x, lm.y, lm.z] for lm in landmarks.landmark]).flatten()
-        return landmarks_array
-
-    def identify_dance_step(self, landmarks_array):
-        """First stage: Identify which dance step the student is performing"""
-        # For now, just return a default step
-        # This will be enhanced in future versions
-        return "Bharatanatyam Araimandi", 0.85
-
-    def validate_posture(self, landmarks_array, identified_step):
+    def _create_video_with_ffmpeg_fallback(self, frames, output_path, fps=30):
         """
-        User-friendly feedback for Bharatanatyam: show only final score (1-5), summary, and reasoning. Hide technical parent condition details and raw corrections.
+        Create a video using ffmpeg as a fallback method.
+        
+        Args:
+            frames: List of frames as numpy arrays
+            output_path: Path to save the output video
+            fps: Frames per second
+            
+        Returns:
+            Path to the created video or None if failed
         """
-        expected_pose = np.mean(landmarks_array, axis=0)
-        body_parts = [
-            ("left_arm", list(range(11, 16))),
-            ("right_arm", list(range(12, 17))),
-            ("left_leg", list(range(23, 26))),
-            ("right_leg", list(range(24, 27))),
-            ("torso", list(range(0, 11))),
-        ]
-        total_score = 100
-        parent_violations = []
-        detected_corrections = ["incorrect-slouch"]  # Simulate parent condition violation
-        parent_conditions = {
-            "incorrect-slouch": "Back is not straight (incorrect-slouch)",
-            "not stiff": "Body is not tight and stiff",
-            "no smile": "Gentle smile is missing",
-            "shaking": "Body is shaking"
-        }
-        for cond, msg in parent_conditions.items():
-            if cond in detected_corrections:
-                parent_violations.append(msg)
-        # If any parent violation, score is set to 20% (major mistake)
-        if parent_violations:
-            total_score = 20
-        # Map score to 1-5 scale
-        if total_score >= 90:
-            rating = 5
-            rating_text = "Excellent: Strong adherence to Bharatanatyam posture requirements."
-        elif total_score >= 80:
-            rating = 4
-            rating_text = "Good: Minor corrections needed."
-        elif total_score >= 60:
-            rating = 3
-            rating_text = "Fair: Several corrections needed."
-        elif total_score >= 40:
-            rating = 2
-            rating_text = "Needs Improvement: Major corrections required."
-        else:
-            rating = 1
-            rating_text = "Poor: Major posture requirement not met."
-        # Reasoning
-        if parent_violations:
-            # List detected issues in plain language
-            issues = []
-            for msg in parent_violations:
-                if "Back is not straight" in msg:
-                    issues.append("your back was not straight")
-                if "Body is not tight and stiff" in msg:
-                    issues.append("your body was not stiff")
-                if "Gentle smile is missing" in msg:
-                    issues.append("gentle smile was missing")
-                if "Body is shaking" in msg:
-                    issues.append("there was shaking")
-            issues_text = ", ".join(issues)
-            reasoning = f"Your posture did not meet the key requirements for Bharatanatyam: {issues_text}. This is a major mistake and affects the overall score."
-        else:
-            reasoning = "Your posture met most key requirements for Bharatanatyam. Minor corrections may be needed for optimal performance."
-        # Feedback summary
-        feedback = []
-        feedback.append(f"Final Score: <b>{rating}/5</b> <span style='color:#4CAF50;'>(Scale: 1=Poor, 2=Needs Improvement, 3=Fair, 4=Good, 5=Excellent)</span>")
-        feedback.append(f"<b>Step:</b> {identified_step}")
-        feedback.append(f"<b>Summary:</b> {rating_text}")
-        feedback.append(f"<b>Reasoning:</b> {reasoning}")
-        feedback.append("<b>How scores are rated:</b> 1=Major posture requirement not met, 2=Major corrections, 3=Several corrections, 4=Minor corrections, 5=Excellent posture.")
-        return feedback
-
+        try:
+            if not frames:
+                print("No frames to create video")
+                return None
+                
+            print(f"Creating video with ffmpeg fallback: {output_path}")
+            
+            # Use our utility function to create the video with ffmpeg
+            if cv2_frames_to_ffmpeg_video(frames, output_path, fps):
+                print(f"Successfully created video with ffmpeg: {output_path}")
+                return output_path
+            else:
+                print(f"Failed to create video with ffmpeg: {output_path}")
+                return None
+                
+        except Exception as e:
+            print(f"Error in _create_video_with_ffmpeg_fallback: {str(e)}")
+            return None
+    
     def annotate_video_with_feedback(self, video_path, output_path, specified_step=None, frame_sample_rate=3):
         """
         Create an annotated video with feedback overlaid.
@@ -198,7 +133,7 @@ class FeedbackGenerator:
             output_path: Path to save the output video
             specified_step: Optional dance step name
             frame_sample_rate: Only process 1 out of every N frames (default: 3)
-                               Higher values = faster processing but lower quality
+                              Higher values = faster processing but lower quality
         
         Returns:
             Path to the annotated video if successful, None otherwise
@@ -335,38 +270,59 @@ class FeedbackGenerator:
         start_time = subprocess.check_output("date +%s", shell=True).decode().strip()
         precomputed_feedbacks = {}
         try:
-            # Always pass mean and std features for each frame to match 199 features
-            for i, landmarks in enumerate(landmarks_list):
-                # landmarks: shape (99,)
-                feat_mean = np.nanmean(landmarks)
-                feat_std = np.nanstd(landmarks)
-                # Concatenate mean and std for each feature
-                if landmarks.shape[0] == 99:
-                    # For each frame, create a 198-dim feature (mean and std for each landmark)
-                    feat = np.concatenate([landmarks, landmarks])  # duplicate for demonstration
-                else:
-                    # Pad to 99 if needed
-                    pad_len = 99 - landmarks.shape[0]
-                    padded = np.pad(landmarks, (0, pad_len), 'constant')
-                    feat = np.concatenate([padded, padded])
-                # If model expects 199, add a dummy step_id feature
-                if feat.shape[0] == 198:
-                    feat = np.concatenate([feat, np.array([0.0])])
-                test_feat = feat.reshape(1, -1)
-                try:
-                    prediction = self.model.predict(test_feat)
-                    correction = self.label_encoder.inverse_transform(prediction)[0] if self.label_encoder else prediction[0]
-                    precomputed_feedbacks[i] = correction
-                except Exception as e:
-                    print(f"Error in precomputing feedback for frame {i}: {e}")
-            print(f"Precomputed feedbacks for {len(precomputed_feedbacks)} frames")
+            if self.step_map and identified_step in self.step_map:
+                print(f"Using step_map optimization for '{identified_step}'")
+                step_id_num = self.step_map.get(identified_step, 0)
+                
+                # Calculate aggregate features from all landmarks at once
+                all_landmarks_array = np.array(landmarks_list)
+                feat_mean = np.nanmean(all_landmarks_array, axis=0)
+                feat_std = np.nanstd(all_landmarks_array, axis=0)
+                
+                # Use 99-dimensional features as expected by the model
+                if feat_mean.shape[0] != 99:
+                    # Pad or truncate to 99 features if needed
+                    feat_mean = np.pad(feat_mean, (0, max(0, 99 - feat_mean.shape[0])), 'constant')[:99]
+                    feat_std = np.pad(feat_std, (0, max(0, 99 - feat_std.shape[0])), 'constant')[:99]
+                    
+                # Combine features
+                feat = np.concatenate([feat_mean, feat_std])
+                
+                # Add the step_id feature
+                feat_reshaped = feat.reshape(1, -1)
+                step_id_array = np.array([[step_id_num]], dtype=np.float32)
+                test_feat = np.hstack([feat_reshaped, step_id_array])
+                
+                # Get the global feedback for the entire video
+                prediction = self.model.predict(test_feat)
+                global_feedback = self.label_encoder.inverse_transform(prediction)[0] if self.label_encoder else prediction[0]
+                precomputed_feedbacks['global'] = global_feedback
+                print(f"Generated global feedback: '{global_feedback}'")
+            else:
+                # For models without step map, precompute key frame feedbacks
+                print("Using key frame optimization")
+                # Use a larger sampling interval for precomputation to save time
+                precompute_interval = max(5, frame_sample_rate * 2)  # Skip even more frames for precomputation
+                key_frames = list(range(0, len(landmarks_list), precompute_interval))
+                
+                for i in key_frames:
+                    if i < len(landmarks_list):  # Safety check
+                        try:
+                            landmarks = np.array(landmarks_list[i]).reshape(1, -1)
+                            prediction = self.model.predict(landmarks)
+                            correction = self.label_encoder.inverse_transform(prediction)[0] if self.label_encoder else prediction[0]
+                            precomputed_feedbacks[i] = correction
+                        except Exception as e:
+                            print(f"Error in precomputing feedback for frame {i}: {e}")
+                
+                print(f"Precomputed feedbacks for {len(precomputed_feedbacks)} key frames")
         except Exception as e:
             print(f"Error in precomputing feedbacks: {e}")
         
         end_time = subprocess.check_output("date +%s", shell=True).decode().strip()
         processing_time = int(end_time) - int(start_time)
         print(f"Precomputing feedbacks completed in {processing_time} seconds")
-
+        
         # Now process frames for display
         print("Generating annotated video frames...")
         start_time = subprocess.check_output("date +%s", shell=True).decode().strip()
@@ -461,24 +417,28 @@ class FeedbackGenerator:
         print(f"Feedback summary: {feedback_summary}")
             
         # Calculate how many frames we need to add to reach minimum 10 seconds
-        total_frames_so_far = len(frames)
+        total_frames_so_far = len(frames)  # only video frames, no feedback frame
         total_seconds_so_far = total_frames_so_far / fps
+        
         print(f"Video duration so far: {total_seconds_so_far:.2f} seconds")
+        
+        # Ensure at least 10 seconds total duration
         min_seconds = 10
         if total_seconds_so_far < min_seconds:
-            # Loop the original frames to fill up to 10 seconds
-            required_frames = int(min_seconds * fps)
-            looped_frames = []
-            while len(looped_frames) < required_frames:
-                for frame in frames:
-                    if len(looped_frames) < required_frames:
-                        if use_opencv:
-                            out.write(frame)
-                        looped_frames.append(frame.copy())
-                    else:
-                        break
-            all_processed_frames.extend(looped_frames[len(frames):])
-            print(f"Looped frames to reach {min_seconds} seconds total duration.")
+            # For the remaining duration, just repeat the last frame
+            additional_seconds = min_seconds - total_seconds_so_far
+            additional_frames = int(additional_seconds * fps)
+            print(f"Adding {additional_frames} additional frames to reach minimum {min_seconds} seconds")
+            
+            # Get the last frame to repeat
+            last_frame = frames[-1].copy() if frames else np.ones((height, width, 3), dtype=np.uint8) * 255
+            
+            # Add last frame copies to meet the minimum duration
+            print("Adding additional frames...")
+            for _ in range(additional_frames):
+                if use_opencv:
+                    out.write(last_frame)
+                all_processed_frames.append(last_frame.copy())
 
         # Try the main method of creating the video
         print("Finalizing video...")
@@ -541,6 +501,26 @@ class FeedbackGenerator:
         else:
             print(f"Failed to create video: {output_path}")
             return None, []
+    def __init__(self, model_path):
+        with open(model_path, 'rb') as model_file:
+            model_data = pickle.load(model_file)
+            # Handle both formats: (clf, label_encoder) or (clf, label_encoder, step_map)
+            if len(model_data) == 3:
+                self.model, self.label_encoder, self.step_map = model_data
+                # Reverse the step map for lookup
+                self.id_to_step = {v: k for k, v in self.step_map.items()} if self.step_map else {}
+            else:
+                self.model, self.label_encoder = model_data
+                self.step_map = None
+                self.id_to_step = {}
+                
+        self.mp_pose = solutions.pose.Pose(
+            static_image_mode=False, 
+            model_complexity=2, 
+            enable_segmentation=True, 
+            min_detection_confidence=0.5, 
+            min_tracking_confidence=0.5
+        )
 
     def analyze_posture(self, video_path):
         """Analyze the student's posture in a video"""
@@ -572,14 +552,15 @@ class FeedbackGenerator:
         # Stage 2: Validate the posture using the identified step
         feedback = self.validate_posture(landmarks_array, identified_step)
         
-        # Add step information to feedback
-        feedback.insert(0, f"Identified dance step: {identified_step} (confidence: {confidence:.2f})")
+        # Add step identification to feedback if available
+        if self.step_map:
+            feedback.insert(0, f"Identified dance step: {identified_step} (confidence: {confidence:.2f})")
         
         return feedback
-
+        
     def analyze_posture_with_step(self, video_path, dance_step):
         """
-        Analyze the student's posture in a video with a specified dance step.
+        Analyze the student's posture in a video using a specified dance step
         
         Args:
             video_path: Path to the video file
@@ -619,23 +600,176 @@ class FeedbackGenerator:
         
         return feedback
 
-def get_feedback(video_path, model_path, dance_step=None):
-    """
-    Get feedback for a dance video.
-    
-    Args:
-        video_path: Path to the video file
-        model_path: Path to the pre-trained model
-        dance_step: Optional dance step name
+    def _extract_landmarks(self, landmarks):
+        """Extract landmarks from a MediaPipe pose landmarks object"""
+        # Extract the raw landmarks
+        landmarks_array = np.array([[lm.x, lm.y, lm.z] for lm in landmarks.landmark]).flatten()
         
-    Returns:
-        List of feedback strings
-    """
-    generator = FeedbackGenerator(model_path)
+        # Log the shape to debug
+        # print(f"Extracted landmarks shape: {landmarks_array.shape}")
+        
+        return landmarks_array
+
+    def identify_dance_step(self, landmarks_array):
+        """First stage: Identify which dance step the student is performing"""
+        if not self.step_map:
+            return "unknown", 0.0
+        
+        try:
+            # Process landmarks as done during training
+            # First reshape if needed
+            if landmarks_array.ndim == 3:
+                T = landmarks_array.shape[0]
+                flat = landmarks_array.reshape(T, -1)
+            else:
+                flat = landmarks_array
+                
+            # Compute mean and std across all frames
+            feat_mean = np.nanmean(flat, axis=0)
+            feat_std = np.nanstd(flat, axis=0)
+            
+            # Use 99-dimensional features as expected by the model
+            if feat_mean.shape[0] != 99:
+                # Pad or truncate to 99 features if needed
+                feat_mean = np.pad(feat_mean, (0, max(0, 99 - feat_mean.shape[0])), 'constant')[:99]
+                feat_std = np.pad(feat_std, (0, max(0, 99 - feat_std.shape[0])), 'constant')[:99]
+                
+            feat = np.concatenate([feat_mean, feat_std])
+            feat_reshaped = feat.reshape(1, -1)  # Make feat a 2D array
+            
+            # Get all possible step_ids
+            step_ids = list(self.step_map.values())
+            
+            # Create test features for each possible step_id
+            step_predictions = []
+            for step_id in step_ids:
+                # Create a copy of features for each possible step_id
+                step_id_array = np.array([[step_id]], dtype=np.float32)  # Make step_id a 2D array
+                test_feat = np.hstack([feat_reshaped, step_id_array])
+                
+                # Get probability of "correct" classification for this step_id
+                probs = self.model.predict_proba(test_feat)
+                
+                # Find probability for "correct" class if it exists
+                if "correct" in self.model.classes_:
+                    correct_idx = np.where(self.model.classes_ == "correct")[0][0]
+                    correct_prob = probs[0][correct_idx]
+                else:
+                    # If no "correct" class, use the highest probability class
+                    correct_prob = probs.max()
+                    
+                step_predictions.append((step_id, correct_prob))
+            
+            # Choose step_id with highest probability of being "correct"
+            best_step_id, best_prob = max(step_predictions, key=lambda x: x[1])
+            return self.id_to_step.get(best_step_id, "unknown"), best_prob
+        except Exception as e:
+            print(f"Error in identify_dance_step: {e}")
+            return "unknown", 0.0
+            
+            # Find probability for "correct" class if it exists
+            if "correct" in self.model.classes_:
+                correct_idx = np.where(self.model.classes_ == "correct")[0][0]
+                correct_prob = probs[0][correct_idx]
+            else:
+                # If no "correct" class, use the highest probability class
+                correct_prob = probs.max()
+                
+            step_predictions.append((step_id, correct_prob))
+        
+        # Choose step_id with highest probability of being "correct"
+        best_step_id, best_prob = max(step_predictions, key=lambda x: x[1])
+        return self.id_to_step.get(best_step_id, "unknown"), best_prob
+
+    def validate_posture(self, landmarks_array, step_id):
+        """Second stage: Validate the posture for the identified step"""
+        # If no step map, use simple prediction
+        if not self.step_map:
+            return self._simple_posture_analysis(landmarks_array)
+        
+        # Check if the step is in our model
+        step_id_num = None
+        if step_id in self.step_map:
+            step_id_num = self.step_map.get(step_id)
+        
+        # If step not in model, use a generic analysis
+        if step_id_num is None:
+            # Use simple analysis but add a note about the step not being trained
+            basic_feedback = self._simple_posture_analysis(landmarks_array)
+            basic_feedback.append(f"Note: '{step_id}' is not in the trained model yet. Consider recording more examples and retraining for specific feedback.")
+            return basic_feedback
+        
+        try:    
+            # Process landmarks as done during training
+            # First reshape if needed
+            if landmarks_array.ndim == 3:
+                T = landmarks_array.shape[0]
+                flat = landmarks_array.reshape(T, -1)
+            else:
+                flat = landmarks_array
+                
+            # Compute mean and std across all frames
+            feat_mean = np.nanmean(flat, axis=0)
+            feat_std = np.nanstd(flat, axis=0)
+            
+            # Debug info
+            print(f"Mean features shape: {feat_mean.shape}")
+            print(f"Std features shape: {feat_std.shape}")
+            
+            # Use 99-dimensional features as expected by the model (33 pose landmarks with x,y,z coordinates)
+            # This assumes the model was trained with 99-dimensional feature vectors for both mean and std
+            if feat_mean.shape[0] != 99:
+                # Pad or truncate to 99 features if needed
+                feat_mean = np.pad(feat_mean, (0, max(0, 99 - feat_mean.shape[0])), 'constant')[:99]
+                feat_std = np.pad(feat_std, (0, max(0, 99 - feat_std.shape[0])), 'constant')[:99]
+            
+            feat = np.concatenate([feat_mean, feat_std])
+            
+            # Debug info
+            print(f"Combined features shape: {feat.shape}")
+            
+            # Add the step_id feature - reshape feat to ensure it's 2D
+            feat_reshaped = feat.reshape(1, -1)  # Make feat a 2D array
+            step_id_array = np.array([[step_id_num]], dtype=np.float32)  # Make step_id a 2D array
+            test_feat = np.hstack([feat_reshaped, step_id_array])
+            
+            # Debug info
+            print(f"Final test features shape: {test_feat.shape}")
+            
+            # Predict posture quality
+            prediction = self.model.predict(test_feat)
+            
+            if self.label_encoder:
+                correction_tip = self.label_encoder.inverse_transform(prediction)[0]
+            else:
+                correction_tip = prediction[0]
+                
+            return [correction_tip]
+        except Exception as e:
+            print(f"Error in validate_posture: {e}")
+            return ["Error analyzing posture. Please try again."]
+        
+        if self.label_encoder:
+            correction_tip = self.label_encoder.inverse_transform(prediction)[0]
+        else:
+            correction_tip = prediction[0]
+            
+        return [correction_tip]
     
-    if dance_step:
-        # If dance step is specified, use it for more accurate analysis
-        return generator.analyze_posture_with_step(video_path, dance_step)
-    else:
-        # Otherwise use automatic detection
-        return generator.analyze_posture(video_path)
+    def _simple_posture_analysis(self, landmarks_array):
+        """Legacy analysis for old model format"""
+        results = []
+        for landmarks in landmarks_array:
+            prediction = self.model.predict([landmarks])
+            if self.label_encoder:
+                correction_tip = self.label_encoder.inverse_transform(prediction)[0]
+            else:
+                correction_tip = prediction[0]
+            results.append(correction_tip)
+        return results
+
+    # No longer needed, feedback is now the correction tip from the model
+
+def get_feedback(video_path):
+    generator = FeedbackGenerator('/workspaces/natya/NatyaAlignExpertAI/posture-feedback-app/trained_model/model.pkl')
+    return generator.analyze_posture(video_path)
