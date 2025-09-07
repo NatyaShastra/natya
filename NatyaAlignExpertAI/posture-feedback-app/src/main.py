@@ -1,3 +1,6 @@
+@app.route("/")
+def index():
+    return "NatyaAlignExpertAI backend is running!"
 import threading
 from google_drive_upload import upload_feedback_and_video
 import os
