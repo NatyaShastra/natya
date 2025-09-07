@@ -214,9 +214,20 @@ def upload():
         # Continue anyway, as we at least have the video
     
 
+
     # --- Google Drive Integration ---
-    # Extract all needed data before starting thread
-    student_id = request.form.get('student_id', video_filename.split('.')[0])
+    # Extract name and place from form, use for filename
+    user_name = request.form.get('userName', '').strip()
+    place = request.form.get('place', '').strip()
+    # Shorten and sanitize name for filename
+    def sanitize(s):
+        return ''.join(c for c in s if c.isalnum() or c in ('-', '_')).replace(' ', '_')
+    short_name = sanitize(user_name)[:12] if user_name else 'anon'
+    short_place = sanitize(place)[:10] if place else 'unknown'
+    # Compose student_id for file naming: e.g., Gachibowli_Akash_20240907
+    from datetime import datetime
+    date_str = datetime.now().strftime('%Y%m%d')
+    student_id = f"{short_place}_{short_name}_{date_str}"
     feedback_text = '\n'.join(user_friendly_feedback if isinstance(user_friendly_feedback, list) else [str(user_friendly_feedback)])
     final_video_path = full_annotated_path
 

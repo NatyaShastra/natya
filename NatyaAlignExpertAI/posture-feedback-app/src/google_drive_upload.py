@@ -53,8 +53,8 @@ def upload_feedback_and_video(feedback_text, video_path, student_id):
         f.write(feedback_text)
     # Upload feedback
     upload_file_to_drive(feedback_filename, feedback_filename, 'text/plain')
-    # Upload video
-    video_filename = os.path.basename(video_path)
+    # Upload video with same base name as feedback
+    video_filename = f"{student_id}.mp4"
     upload_file_to_drive(video_path, video_filename, 'video/mp4')
     # Optionally, remove local feedback file
     os.remove(feedback_filename)
