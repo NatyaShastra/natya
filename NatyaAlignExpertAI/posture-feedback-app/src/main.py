@@ -1,3 +1,20 @@
+import threading
+from google_drive_upload import upload_feedback_and_video
+import os
+from flask import Flask, request, jsonify, send_from_directory, send_file, current_app
+from flask_cors import CORS
+from video_upload import upload_video
+from posture_analysis import analyze_posture
+from feedback_generator import get_feedback, FeedbackGenerator
+from dance_steps import get_available_dance_steps, get_step_id_from_name
+from extend_video import process_all_videos_in_directory, ensure_min_duration
+from ffmpeg_utils import cv2_frames_to_ffmpeg_video
+from utils.video_utils import downscale_video
+
+app = Flask(__name__)
+CORS(app)
+
+# Root route for health check
 @app.route("/")
 def index():
     return "NatyaAlignExpertAI backend is running!"
