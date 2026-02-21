@@ -1,0 +1,11 @@
+[build]
+  # Netlify should run the build from the NatyaWebUI subdirectory
+  base = "NatyaWebUI"
+  command = "npm run build"
+  publish = "dist"
+
+# If you use branch-specific overrides, add them here. Example:
+#[context.production]
+#  base = "NatyaWebUI"
+#  command = "npm ci && npm run build"
+#  publish = "dist"
