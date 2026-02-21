@@ -56,10 +56,10 @@ export const Event: React.FC = () => (
         </div>
         <aside className="event-side">
           <h3>Event Links</h3>
-          <div style={{marginTop:8}}>
+          <div className="reg-item" style={{marginTop:8}}>
             Event Registration: <a href="https://docs.google.com/forms/d/11RJkLRD7Dca4lIHYkiWZWA9IVc-I2wVwC-8fhk0O9RE/edit" target="_blank" rel="noopener noreferrer">Register</a>
           </div>
-          <div style={{marginTop:8}}>
+          <div className="reg-item" style={{marginTop:8}}>
             Attendees information: <a href="https://docs.google.com/forms/d/1_Q-X7_Nf8CL89JViK5Oo2wixAaj3IkCatLmRgMMEwEE/edit" target="_blank" rel="noopener noreferrer">Attendees Info</a>
           </div>
         </aside>
