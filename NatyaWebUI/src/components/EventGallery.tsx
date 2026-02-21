@@ -19,8 +19,8 @@ export const EventGallery = () => {
                 <div className="event-item">
                     <h4>YadagiriGutta Dance Festival</h4>
                     <p className="subtitle">"YadagiriGutta dance festival"</p>
-                    <iframe src="https://www.youtube.com/watch?v=KGh98hfqs5A" allowFullScreen></iframe>
-                    <div className="embed-fallback"><a href="https://www.youtube.com/watch?v=KGh98hfqs5A" target="_blank" rel="noopener noreferrer">Open on Instagram</a></div>
+                    <iframe src="https://www.youtube.com/embed/KGh98hfqs5A" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    <div className="embed-fallback"><a href="https://www.youtube.com/watch?v=KGh98hfqs5A" target="_blank" rel="noopener noreferrer">Open on YouTube</a></div>
                 </div>
             </div>
         </section>
