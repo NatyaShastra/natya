@@ -8,6 +8,21 @@ export const EventGallery = () => {
         <h2>✨ Celebrating the Rhythm of Tradition! ✨
         At NatyaShastra, every event is a journey into the rich heritage of Bharatanatyam. From vibrant performances to enriching workshops, our stage brings together passion, dedication, and the timeless beauty of classical dance. Stay updated on our upcoming events and relive past performances that showcase the artistry of our talented students.</h2>
         <section>
+            <h3 style={{ background: "beige" }}>2025 Events</h3>
+            <div className="event-group">
+                <div className="event-item">
+                    <h4>Natyashastra Annual Day 2025 — Full Event with Salangai Pooja</h4>
+                    <p className="subtitle">"Full event recording with Salangai Pooja."</p>
+                    <iframe src="https://www.youtube.com/embed/8TONd98ippA" allowFullScreen></iframe>
+                </div>
+                <div className="event-item">
+                    <h4>Yadagiri Gutta Dance Festival</h4>
+                    <p className="subtitle">"Yadagiri Gutta dance festival — Instagram post."</p>
+                    <iframe src="https://www.instagram.com/p/DQ_GAijCe6KYV2fwovwiw-bTaOgu-1SR4hAYBs0/embed" allowFullScreen></iframe>
+                </div>
+            </div>
+        </section>
+        <section>
             <h3 style={{ background: "beige" }}>2024 Events</h3>
             <div className="event-group">
                 <div className="event-item">

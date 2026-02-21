@@ -28,8 +28,12 @@ h2 {
 
 h3 {
   font-size: 1.6em;
-  /* margin-top: 70px; */
-  padding-top: 20px;
+  /* ensure header sits above embedded content and has clear spacing */
+  margin-top: 40px;
+  padding: 10px 16px;
+  position: relative;
+  z-index: 2;
+  display: inline-block;
 }
 
 h4 {
@@ -69,6 +73,8 @@ iframe {
   width: 100%;
   height: 100%;
   border: none;
+  position: relative;
+  z-index: 1;
 }
 
 iframe[src*="instagram.com"] {
@@ -130,8 +136,10 @@ iframe[src*="instagram.com"] {
   }
   h3 {
     font-size: 1.4em;
-    margin-top: 70px;
-    padding-top: 20px;
+    margin-top: 40px;
+    padding: 10px 12px;
+    position: relative;
+    z-index: 2;
   }
 
   h4 {

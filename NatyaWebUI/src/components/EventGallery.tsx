@@ -8,17 +8,36 @@ export const EventGallery = () => {
         <h2>✨ Celebrating the Rhythm of Tradition! ✨
         At NatyaShastra, every event is a journey into the rich heritage of Bharatanatyam. From vibrant performances to enriching workshops, our stage brings together passion, dedication, and the timeless beauty of classical dance. Stay updated on our upcoming events and relive past performances that showcase the artistry of our talented students.</h2>
         <section>
+            <h3 style={{ background: "beige" }}>2025 Events</h3>
+            <div className="event-group">
+                <div className="event-item">
+                    <h4>Natyashastra Annual Day 2025 — Full Event with Salangai Pooja</h4>
+                    <p className="subtitle">"Full event recording with Salangai Pooja."</p>
+                    <iframe src="https://www.youtube.com/embed/8TONd98ippA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    <div className="embed-fallback"><a href="https://www.youtube.com/watch?v=8TONd98ippA" target="_blank" rel="noopener noreferrer">Open full event on YouTube</a></div>
+                </div>
+                <div className="event-item">
+                    <h4>Yadagiri Gutta Dance Festival</h4>
+                    <p className="subtitle">"Yadagiri Gutta dance festival — Instagram post."</p>
+                    <iframe src="https://www.instagram.com/p/DQ_GAijCe6KYV2fwovwiw-bTaOgu-1SR4hAYBs0/embed" allowFullScreen></iframe>
+                    <div className="embed-fallback"><a href="https://www.instagram.com/p/DQ_GAijCe6KYV2fwovwiw-bTaOgu-1SR4hAYBs0/" target="_blank" rel="noopener noreferrer">Open on Instagram</a></div>
+                </div>
+            </div>
+        </section>
+        <section>
             <h3 style={{ background: "beige" }}>2024 Events</h3>
             <div className="event-group">
                 <div className="event-item">
                     <h4>Natyashastra Annual Day Celebration with Salangai Pooja</h4>
                     <p className="subtitle">"Event filled with grandeur and cultural performances."</p>
-                    <iframe src="https://www.youtube.com/embed/Uk5cd0MzwjE" allowFullScreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/Uk5cd0MzwjE" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    <div className="embed-fallback"><a href="https://www.youtube.com/watch?v=Uk5cd0MzwjE" target="_blank" rel="noopener noreferrer">Open on YouTube</a></div>
                 </div>
                 <div className="event-item">
                     <h4>Maha Shivaratri Celebration at Brahma Kumari</h4>
                     <p className="subtitle">"Spiritual celebrations with mesmerizing dances"</p>
-                    <iframe src="https://www.youtube.com/embed/rWVMGterEv8" allowFullScreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/rWVMGterEv8" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    <div className="embed-fallback"><a href="https://www.youtube.com/watch?v=rWVMGterEv8" target="_blank" rel="noopener noreferrer">Open on YouTube</a></div>
                 </div>
             </div>
         </section>
@@ -53,7 +72,7 @@ export const EventGallery = () => {
             </div>
         </section> 
         
-        <div className="event-gallery">
+        <div className="gallery-section">
         <h1 className="s-eventgallery">Gallery</h1>
         <h2>📸 Capturing the Grace of Bharatanatyam! 📸
         Our gallery is a visual tapestry of the elegance, expressions, and energy that define NatyaShastra. Explore moments from mesmerizing performances, heartfelt practice sessions, and behind-the-scenes glimpses of our dance journey. Each picture tells a story of devotion, discipline, and the love for this ancient art form.</h2>
@@ -67,6 +86,7 @@ export const EventGallery = () => {
                 <div className="gallery-item">
                     <p className="subtitle">"Honoring the past, dancing in the present."</p>
                     <iframe src="https://www.youtube.com/embed/WKpivq4ESXs" allowFullScreen></iframe>
+                    <div className="embed-fallback"><a href="https://www.youtube.com/watch?v=WKpivq4ESXs" target="_blank" rel="noopener noreferrer">Open on YouTube</a></div>
                 </div>
                 <div className="gallery-item">
                     <p className="subtitle">"Showcasing the rich traditions of Bharatam"</p>
@@ -79,6 +99,7 @@ export const EventGallery = () => {
                 <div className="gallery-item">
                     <p className="subtitle">"Capturing the essence of traditional dance."</p>
                     <iframe src="https://www.instagram.com/reel/DFQmMFKB6L9/embed" allowFullScreen></iframe>
+                    <div className="embed-fallback"><a href="https://www.instagram.com/reel/DFQmMFKB6L9/" target="_blank" rel="noopener noreferrer">Open on Instagram</a></div>
                 </div>
             </div>
         </section>
